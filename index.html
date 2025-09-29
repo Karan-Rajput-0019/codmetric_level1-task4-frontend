@@ -38,18 +38,18 @@
 
         <div class="card">
           <strong>Share a Photo & Story</strong>
-          <form id="shareForm" aria-label="Share a travel story">
+          <form id="shareForm" role="form" aria-label="Share a travel story">
             <label for="title">Title</label>
-            <input id="title" type="text" required placeholder="e.g. Sunset in Goa" />
+            <input id="title" name="title" type="text" required placeholder="e.g. Sunset in Goa" />
 
             <label for="location">Location</label>
-            <input id="location" type="text" placeholder="e.g. Goa, India" />
+            <input id="location" name="location" type="text" required placeholder="e.g. Goa, India" />
 
             <label for="image">Image</label>
-            <input id="image" type="file" accept="image/*" aria-label="Upload a travel photo" />
+            <input id="image" name="image" type="file" accept="image/*" aria-label="Upload a travel photo" />
 
             <label for="story">Story</label>
-            <textarea id="story" required placeholder="Write your travel experience here..."></textarea>
+            <textarea id="story" name="story" required placeholder="Write your travel experience here..."></textarea>
 
             <div class="form-actions">
               <button type="button" id="clearBtn" class="btn ghost">Clear</button>
@@ -93,9 +93,9 @@
   <div id="authModal" class="modal hidden" role="dialog" aria-modal="true">
     <div class="modal-content">
       <h2 id="modalTitle">Sign In</h2>
-      <form id="authForm">
-        <input type="email" id="modalEmail" placeholder="Email" required />
-        <input type="password" id="modalPassword" placeholder="Password" required />
+      <form id="authForm" role="form" novalidate>
+        <input type="email" id="modalEmail" name="email" placeholder="Email" required autocomplete="email" />
+        <input type="password" id="modalPassword" name="password" placeholder="Password" required autocomplete="current-password" />
         <button type="submit" class="btn primary">Continue</button>
         <p id="modalMessage" class="form-status" aria-live="polite"></p>
       </form>
