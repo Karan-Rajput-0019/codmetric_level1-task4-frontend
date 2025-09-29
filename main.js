@@ -9,15 +9,49 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // UI elements
-const authBtn = document.getElementById("authBtn");
 const signUpBtn = document.getElementById("signUpBtn");
+const signInBtn = document.getElementById("signInBtn");
 const signOutBtn = document.getElementById("signOutBtn");
-const userGreeting = document.getElementById("userGreeting");
-const statusEl = document.getElementById("status");
-const feedEl = document.getElementById("feed");
-const galleryEl = document.getElementById("gallery");
-const shareForm = document.getElementById("shareForm");
-const postTpl = document.getElementById("postTpl");
+const statusDiv = document.getElementById("statusDiv");
+const userDetails = document.getElementById("userDetails");
+const emailInput = document.getElementById("emailInput");
+const passwordInput = document.getElementById("passwordInput");
+
+// ✅ Sign-in logic
+signInBtn.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+
+  if (!email || !password) {
+    statusDiv.textContent = "⚠️ Please enter both email and password.";
+    return;
+  }
+
+  statusDiv.textContent = "🔄 Signing in...";
+
+  try {
+    const res = await fetch("https://wanders-api.onrender.com/api/signin", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+    console.log("✅ Sign-in response:", data);
+
+    if (res.ok) {
+      statusDiv.textContent = `✅ Welcome, ${data.email}`;
+      userDetails.textContent = JSON.stringify(data, null, 2);
+    } else {
+      statusDiv.textContent = `❌ ${data.error || "Sign-in failed."}`;
+    }
+  } catch (err) {
+    console.error("❌ Network error:", err);
+    statusDiv.textContent = "❌ Network error. Try again.";
+  }
+});
 
 // Modal elements
 const authModal = document.getElementById("authModal");
