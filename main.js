@@ -114,6 +114,25 @@ if (!authForm) {
       modalMessage.textContent = isSignup
         ? "Signup successful! Check your email to confirm."
         : "Signed in successfully!";
+
+      // ✅ Notify your backend
+      try {
+        const resp = await fetch(`${API_BASE}/api/signin`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, password })
+        });
+
+        const result = await resp.json();
+        console.log("✅ Backend sign-in response:", result);
+
+        if (!resp.ok) {
+          console.warn("⚠️ Backend sign-in failed:", result.error);
+        }
+      } catch (err) {
+        console.error("❌ Error calling backend /api/signin:", err);
+      }
+
       hideModal();
       await refreshUser();
     } catch (err) {
@@ -224,7 +243,7 @@ shareForm?.addEventListener("submit", async (e) => {
     setStatus("Posted successfully", "green");
     shareForm.reset();
     loadPosts();
-  } catch (err) {
+    } catch (err) {
     console.error("Post error:", err);
     setStatus("Post error", "red");
   }
@@ -235,3 +254,4 @@ document.getElementById("clearBtn")?.addEventListener("click", () => {
   shareForm.reset();
   setStatus("");
 });
+   
